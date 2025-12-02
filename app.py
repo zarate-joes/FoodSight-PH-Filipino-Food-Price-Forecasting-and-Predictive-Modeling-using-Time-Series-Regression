@@ -168,26 +168,14 @@ EXOG_COLS = [
 ]
 
 COMMODITIES = [
-    "Rice_(regular,_milled)",
-    "Meat_(pork)",
-    "Meat_(beef)",
-    "Meat_(chicken,_whole)",
-    "Fish_(tilapia)",
-    "Fish_(milkfish)",
-    "Sugar",
-    "Onions_(red)",
-    "Tomatoes",
-    "Bananas_(saba)",
-    "Bananas_(lakatan)",
-    "Maize_(white)",
-    "Maize_(yellow)",
-    "Potatoes_(Irish)",
-    "Cabbage",
-    "Sweet_potatoes",
-    "Mangoes_(carabao)",
-    "Eggs",
-    "Coconut",
-    "Garlic"
+    "Rice (regular, milled)", "Rice (milled, superior)", 
+    "Maize (white)", "Maize (yellow)", "Sugar",
+    "Meat (pork)", "Meat (beef)", "Meat (chicken, whole)", 
+    "Fish (tilapia)", "Fish (fresh)", "Eggs", 
+    "Onions (red)", "Cabbage", "Potatoes (Irish)", 
+    "Sweet potatoes", "Garlic", "Tomatoes", 
+    "Bananas (lakatan)", "Bananas (saba)", 
+    "Coconut", "Mangoes (carabao)"
 ]
 
 # ==========================================
