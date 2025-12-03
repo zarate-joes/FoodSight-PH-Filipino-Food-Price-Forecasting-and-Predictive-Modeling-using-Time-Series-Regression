@@ -155,7 +155,10 @@ st.markdown("""
 DATA_PATH = "wfp_food_prices_phl (main).csv"
 EXOG_PATH = "sarimax_final_training_data_complete_updated.csv"
 JSON_PATH = "dashboard_data.json"
-MODELS_DIR = "models\"
+# Get the folder where app.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Build the path to the models folder
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
 LINEAR_TREND_COLS = ['GWPI_Index', 'YoY_Inflation_Rate', 'Brent_Crude_USD', 'USGC_Diesel_USD']
 EXOG_COLS = [
