@@ -314,7 +314,13 @@ def main():
         return
 
     # LOAD MODEL
-    model_file = f"{selected_c.replace(' ', '_').replace('/', '_')}_SARIMAX_model.joblib"
+    # NEW CODE (Removes parentheses and commas for safety)
+    safe_c = selected_c.replace(' ', '_').replace('/', '_').replace('(', '').replace(')', '').replace(',', '')
+    model_file = f"{safe_c}_SARIMAX_model.joblib"
+    
+    # DEBUG PRINT (Check your Streamlit logs/terminal to see this)
+    print(f"Looking for file: {model_file}") 
+
     model_path = os.path.join(MODELS_DIR, model_file)
     model_loaded = False
     
