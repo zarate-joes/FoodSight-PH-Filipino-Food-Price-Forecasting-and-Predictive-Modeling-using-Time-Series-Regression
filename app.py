@@ -155,7 +155,7 @@ st.markdown("""
 DATA_PATH = "wfp_food_prices_phl (main).csv"
 EXOG_PATH = "sarimax_final_training_data_complete_updated.csv"
 JSON_PATH = "dashboard_data.json"
-MODELS_DIR = "models"
+MODELS_DIR = "models/"
 
 LINEAR_TREND_COLS = ['GWPI_Index', 'YoY_Inflation_Rate', 'Brent_Crude_USD', 'USGC_Diesel_USD']
 EXOG_COLS = [
