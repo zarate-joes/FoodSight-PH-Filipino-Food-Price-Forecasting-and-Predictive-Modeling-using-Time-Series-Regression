@@ -171,7 +171,7 @@ st.markdown("""
 # 2. CONSTANTS & SETUP
 # ==========================================
 DATA_PATH = "wfp_food_prices_phl (main).csv"
-EXOG_PATH = "sarimax_final_training_data_complete_updated.csv" # Ensure this file exists!
+EXOG_PATH = "sarimax_final_training_data_complete_updated.csv"
 JSON_PATH = "dashboard_data.json"
 
 # CORRECT PATH SETUP
@@ -387,7 +387,8 @@ def main():
 
         if not model_loaded:
             st.info("Displaying historical data only (no forecast available).")
-            st.line_chart(y_hist)
+            # ROUNDED HISTORICAL CHART
+            st.line_chart(np.round(y_hist, 2))
         else:
             # Run Forecast
             preds, conf, dates = run_live_forecast(model, X_hist, steps)
@@ -465,14 +466,14 @@ def main():
             # Wrap chart in a white container
             st.markdown('<div class="plot-container">', unsafe_allow_html=True)
             fig = go.Figure()
-            # Historical Line
-            fig.add_trace(go.Scatter(x=y_hist.index, y=y_hist, mode='lines', name='Historical (Actual)', line=dict(color='#2980b9', width=2.5)))
-            # Forecast Line
-            fig.add_trace(go.Scatter(x=dates, y=preds, mode='lines+markers', name='Forecast (Predicted)', line=dict(color='#e74c3c', width=2.5, dash='dash')))
+            # Historical Line - ROUNDED
+            fig.add_trace(go.Scatter(x=y_hist.index, y=np.round(y_hist, 2), mode='lines', name='Historical (Actual)', line=dict(color='#2980b9', width=2.5)))
+            # Forecast Line - ROUNDED
+            fig.add_trace(go.Scatter(x=dates, y=np.round(preds, 2), mode='lines+markers', name='Forecast (Predicted)', line=dict(color='#e74c3c', width=2.5, dash='dash')))
             # Confidence Band
             fig.add_trace(go.Scatter(
                 x=list(dates) + list(dates)[::-1],
-                y=list(conf[:, 1]) + list(conf[:, 0])[::-1],
+                y=list(np.round(conf[:, 1], 2)) + list(np.round(conf[:, 0], 2))[::-1], # ROUNDED CONFIDENCE
                 fill='toself', fillcolor='rgba(231, 76, 60, 0.1)',
                 line=dict(color='rgba(255,255,255,0)'),
                 name='95% Confidence Band'
@@ -544,8 +545,9 @@ def main():
         if y1 is not None and y2 is not None:
             st.markdown('<div class="plot-container">', unsafe_allow_html=True)
             fig_comp = go.Figure()
-            fig_comp.add_trace(go.Scatter(x=y1.index, y=y1, name=c1, line=dict(color='#2980b9')))
-            fig_comp.add_trace(go.Scatter(x=y2.index, y=y2, name=c2, line=dict(color='#e67e22')))
+            # ROUNDED COMPARISON VALUES
+            fig_comp.add_trace(go.Scatter(x=y1.index, y=np.round(y1, 2), name=c1, line=dict(color='#2980b9')))
+            fig_comp.add_trace(go.Scatter(x=y2.index, y=np.round(y2, 2), name=c2, line=dict(color='#e67e22')))
             fig_comp.update_layout(
                 title=f"Price Comparison: {c1} vs {c2}", 
                 margin=dict(l=20, r=20, t=40, b=20),
@@ -593,10 +595,16 @@ def main():
             
             st.markdown('<div class="plot-container">', unsafe_allow_html=True)
             fig_season = go.Figure()
-            fig_season.add_trace(go.Scatter(x=month_names, y=seasonal_avg, mode='lines+markers', name='Avg Price', line=dict(color='#27ae60', width=3)))
+            # ROUNDED SEASONAL VALUES
+            fig_season.add_trace(go.Scatter(x=month_names, y=np.round(seasonal_avg, 2), mode='lines+markers', name='Avg Price', line=dict(color='#27ae60', width=3)))
+            
+            # Calculate and round volatility bands
+            upper_band = np.round(seasonal_avg + seasonal_std, 2)
+            lower_band = np.round(seasonal_avg - seasonal_std, 2)
+            
             fig_season.add_trace(go.Scatter(
                 x=month_names + month_names[::-1],
-                y=(seasonal_avg + seasonal_std).tolist() + (seasonal_avg - seasonal_std).tolist()[::-1],
+                y=upper_band.tolist() + lower_band.tolist()[::-1],
                 fill='toself', fillcolor='rgba(39, 174, 96, 0.1)',
                 line=dict(color='rgba(255,255,255,0)'),
                 name='Volatility Range'
